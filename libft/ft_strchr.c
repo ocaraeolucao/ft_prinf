@@ -1,21 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luvieira <luvieira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/08 18:27:39 by luvieira          #+#    #+#             */
-/*   Updated: 2026/06/16 21:36:23 by luvieira         ###   ########.fr       */
+/*   Created: 2026/05/20 20:57:48 by luvieira          #+#    #+#             */
+/*   Updated: 2026/05/31 17:20:44 by luvieira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include "libft/libft.h"
+char	*ft_strchr(const char *s, int c)
+{
+	int	i;
 
-int	ft_printf(const char *format, ...);
-
-#endif
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == (char) c)
+			return ((char *)&s[i]);
+		i++;
+	}
+	if ((char) c == '\0')
+		return ((char *)&s[i]);
+	return (NULL);
+}

@@ -6,7 +6,7 @@
 /*   By: luvieira <luvieira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/08 18:28:42 by luvieira          #+#    #+#             */
-/*   Updated: 2026/06/16 21:20:03 by luvieira         ###   ########.fr       */
+/*   Updated: 2026/06/16 21:33:29 by luvieira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void	ft_putnbr(long l, int *i, char c)
 		ft_putchar_fd('-', 1);
 		*i++;
 	}
-	if (c == 'x' || c == 'X')
+	if (c == 'x' || c == 'p' || c == 'X')
 	{
 		d = 16;
 		if (c == 'X')

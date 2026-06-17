@@ -1,21 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luvieira <luvieira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/06/08 18:27:39 by luvieira          #+#    #+#             */
-/*   Updated: 2026/06/16 21:36:23 by luvieira         ###   ########.fr       */
+/*   Created: 2026/05/18 20:52:30 by luvieira          #+#    #+#             */
+/*   Updated: 2026/05/28 19:42:16 by luvieira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include "libft.h"
 
-# include <stdarg.h>
-# include "libft/libft.h"
+char	*ft_strdup(const char *s)
+{
+	char	*copy;
+	size_t	i;
 
-int	ft_printf(const char *format, ...);
-
-#endif
+	i = ft_strlen(s) + 1;
+	copy = (char *)malloc(i);
+	if (!copy)
+		return (NULL);
+	(void)ft_strlcpy(copy, s, i);
+	return (copy);
+}
