@@ -6,22 +6,29 @@
 /*   By: luvieira <luvieira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/08 18:28:42 by luvieira          #+#    #+#             */
-/*   Updated: 2026/06/16 21:58:41 by luvieira         ###   ########.fr       */
+/*   Updated: 2026/06/17 19:29:12 by luvieira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static void	ft_putlongnbr(unsigned long l, int *i)
+static void	ft_putlongnbr(unsigned long l, char *str, int *i)
 {
-	char	*decimal;
+	char			*decimal;
 
-	decimal = "0123456789abcdef";
-
-	if (l >= 16)
-		ft_putlongnbr(l / 16, i);
-	ft_putchar_fd(decimal[l % 16], 1);
-	(*i)++;
+	if (!l)
+		*i = ft_putstr("(nil)");
+	else
+	{
+		if (str)
+			*i = ft_putstr(str);
+		str = NULL;
+		decimal = "0123456789abcdef";
+		if (l >= 16)
+			ft_putlongnbr(l / 16, str, i);
+		ft_putchar_fd(decimal[l % 16], 1);
+		(*i)++;
+	}
 }
 
 static void	ft_putnbr(long l, int *i, char c)
@@ -35,7 +42,7 @@ static void	ft_putnbr(long l, int *i, char c)
 	{
 		l = -l;
 		ft_putchar_fd('-', 1);
-		*i++;
+		(*i)++;
 	}
 	if (c == 'x' || c == 'X')
 	{
@@ -56,7 +63,9 @@ static int	ft_putstr(char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] != "\0")
+	if (!str)
+		return (ft_putstr("(null)"));
+	while (str[i] != '\0')
 	{
 		ft_putchar_fd(str[i], 1);
 		i++;
@@ -66,7 +75,6 @@ static int	ft_putstr(char *str)
 
 static int	getarg(char c, va_list args)
 {
-	char	*str;
 	int		i;
 
 	i = 0;
@@ -81,11 +89,7 @@ static int	getarg(char c, va_list args)
 	if (c == 's')
 		return (ft_putstr(va_arg(args, char *)));
 	if (c == 'p')
-	{
-		str = "0x";
-		i += ft_putstr(str);
-		ft_putlongnbr((unsigned long)va_arg(args, void *), &i);
-	}
+		ft_putlongnbr((unsigned long)va_arg(args, void *), "0x", &i);
 	if (c == 'd' || c == 'i')
 		ft_putnbr((long)va_arg(args, int), &i, c);
 	if (c == 'u' || c == 'x' || c == 'X')
@@ -104,17 +108,17 @@ int	ft_printf(const char *format, ...)
 	va_start(args, format);
 	while (*format)
 	{
-		if (format[0] == '%' && format[1] != '\0' && ft_strchr(convertable, format[1]))
+		if (*format == '%' && format[1] && ft_strchr(convertable, format[1]))
 		{
-			i += getarg(format[1], args);
-			format += 2;
+			format++;
+			i += getarg(*format, args);
 		}
 		else
 		{
-			ft_putchar_fd(format[0], 1);
+			ft_putchar_fd(*format, 1);
 			i++;
-			format++;
 		}
+		format++;
 	}
 	va_end(args);
 	return (i);
