@@ -53,8 +53,15 @@ static void	ft_putnbr(long l, int *i, char c)
 
 static int	ft_putstr(char *str)
 {
-	ft_putstr_fd(str, 1);
-	return (ft_strlen(str));
+	int	i;
+
+	i = 0;
+	while (str[i] != "\0")
+	{
+		ft_putchar_fd(str[i], 1);
+		i++;
+	}
+	return (i);
 }
 
 static int	getarg(char c, va_list args)
