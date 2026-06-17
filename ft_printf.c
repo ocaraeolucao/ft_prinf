@@ -6,11 +6,23 @@
 /*   By: luvieira <luvieira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/08 18:28:42 by luvieira          #+#    #+#             */
-/*   Updated: 2026/06/16 21:33:29 by luvieira         ###   ########.fr       */
+/*   Updated: 2026/06/16 21:58:41 by luvieira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+static void	ft_putlongnbr(unsigned long l, int *i)
+{
+	char	*decimal;
+
+	decimal = "0123456789abcdef";
+
+	if (l >= 16)
+		ft_putlongnbr(l / 16, i);
+	ft_putchar_fd(decimal[l % 16], 1);
+	(*i)++;
+}
 
 static void	ft_putnbr(long l, int *i, char c)
 {
@@ -25,7 +37,7 @@ static void	ft_putnbr(long l, int *i, char c)
 		ft_putchar_fd('-', 1);
 		*i++;
 	}
-	if (c == 'x' || c == 'p' || c == 'X')
+	if (c == 'x' || c == 'X')
 	{
 		d = 16;
 		if (c == 'X')
@@ -45,29 +57,27 @@ static int	ft_putstr(char *str)
 	return (ft_strlen(str));
 }
 
-static int	ft_putchar(char c)
-{
-	ft_putchar_fd(c, 1);
-	return (1);
-}
-
 static int	getarg(char c, va_list args)
 {
 	char	*str;
 	int		i;
 
 	i = 0;
-	if (c == 'c')
-		return (ft_putchar((char)va_arg(args, int)));
-	if (c == '%')
-		return (ft_putchar(c));
+	if (c == 'c' || c == '%')
+	{
+		if (c == 'c')
+			ft_putchar_fd((char)va_arg(args, int), 1);
+		else
+			ft_putchar_fd(c, 1);
+		return (1);
+	}
 	if (c == 's')
 		return (ft_putstr(va_arg(args, char *)));
 	if (c == 'p')
 	{
 		str = "0x";
 		i += ft_putstr(str);
-		ft_putnbr((long)va_arg(args, void *), &i, c);
+		ft_putlongnbr((unsigned long)va_arg(args, void *), &i);
 	}
 	if (c == 'd' || c == 'i')
 		ft_putnbr((long)va_arg(args, int), &i, c);
