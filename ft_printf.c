@@ -104,7 +104,7 @@ int	ft_printf(const char *format, ...)
 	va_start(args, format);
 	while (*format)
 	{
-		if (format[0] == '%' && ft_strchr(convertable, format[1]))
+		if (format[0] == '%' && format[1] != '\0' && ft_strchr(convertable, format[1]))
 		{
 			i += getarg(format[1], args);
 			format += 2;
