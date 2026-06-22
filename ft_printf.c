@@ -6,11 +6,26 @@
 /*   By: luvieira <luvieira@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/08 18:28:42 by luvieira          #+#    #+#             */
-/*   Updated: 2026/06/17 19:29:12 by luvieira         ###   ########.fr       */
+/*   Updated: 2026/06/22 18:42:08 by luvieira         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+static int	ft_putstr(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (ft_putstr("(null)"));
+	while (str[i] != '\0')
+	{
+		ft_putchar_fd(str[i], 1);
+		i++;
+	}
+	return (i);
+}
 
 static void	ft_putlongnbr(unsigned long l, char *str, int *i)
 {
@@ -58,21 +73,6 @@ static void	ft_putnbr(long l, int *i, char c)
 	(*i)++;
 }
 
-static int	ft_putstr(char *str)
-{
-	int	i;
-
-	i = 0;
-	if (!str)
-		return (ft_putstr("(null)"));
-	while (str[i] != '\0')
-	{
-		ft_putchar_fd(str[i], 1);
-		i++;
-	}
-	return (i);
-}
-
 static int	getarg(char c, va_list args)
 {
 	int		i;
@@ -100,7 +100,7 @@ static int	getarg(char c, va_list args)
 int	ft_printf(const char *format, ...)
 {
 	va_list		args;
-	size_t		i;
+	int			i;
 	const char	*convertable;
 
 	convertable = "cspdiuxX%";
